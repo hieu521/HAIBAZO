@@ -55,31 +55,34 @@ function MyForm() {
   }, [isRunning]);
 
   // Hàm xử lý khi nhấn vào một số
-  const handleNumberClick = (number) => {
-    const nextExpectedNumber = clickedNumbers.length + 1;
+ // Hàm xử lý khi nhấn vào một số
+const handleNumberClick = (number) => {
+  const nextExpectedNumber = clickedNumbers.length + 1;
 
-    // Kiểm tra nếu số được nhấn là số đúng theo thứ tự
-    if (number === nextExpectedNumber) {
-      setClickedNumbers((prev) => [...prev, number]);
-      setFadingNumbers((prev) => [...prev, number]);
+  // Kiểm tra nếu số được nhấn là số đúng theo thứ tự
+  if (number === nextExpectedNumber) {
+    setClickedNumbers((prev) => [...prev, number]);
+    setFadingNumbers((prev) => [...prev, number]);
 
-      // Bắt đầu fade-out sau khi đổi màu trong 1 giây
-      setTimeout(() => {
-        setFadingNumbers((prev) => prev.filter((n) => n !== number)); 
-        setDisappearedNumbers((prev) => [...prev, number]); 
-      }, 3000); // Fade-out trong 3 giây
+    // Bắt đầu fade-out sau khi đổi màu trong 1 giây
+    setTimeout(() => {
+      setFadingNumbers((prev) => prev.filter((n) => n !== number)); 
+      setDisappearedNumbers((prev) => [...prev, number]);
 
-      // Kiểm tra nếu người dùng đã nhấn hết tất cả các số
-      if (number === numbers.length) {
-        setMessage("Hoàn thành!"); // Hiển thị thông báo hoàn thành
-        setIsRunning(false); // Ngừng đếm thời gian
+      // Kiểm tra nếu tất cả các số đã biến mất sau khi fade-out
+      if (clickedNumbers.length + 1 === numbers.length) {
+        setMessage("All Clear!"); // Hiển thị thông báo hoàn thành
+        setIsRunning(false); // Ngừng đếm thời gian khi tất cả số đã biến mất
       }
-    } else {
-      // Nếu nhấn sai số, thông báo thất bại và dừng trò chơi
-      setMessage("Thất bại! Bạn đã nhấn sai số.");
-      setIsRunning(false); // Ngừng đếm thời gian
-    }
-  };
+    }, 3000); // Fade-out trong 3 giây
+
+  } else {
+    // Nếu nhấn sai số, thông báo thất bại và dừng trò chơi
+    setMessage("Game Over");
+    setIsRunning(false); // Ngừng đếm thời gian
+  }
+};
+
 
   // Hàm xáo trộn mảng để các số xuất hiện ngẫu nhiên
   const shuffleArray = (array) => {
@@ -105,8 +108,17 @@ function MyForm() {
         }}
         onSubmit={(e) => e.preventDefault()} // Ngăn chặn refresh trang khi submit form
       >
-        <h2>{message}</h2> {/* Hiển thị thông báo */}
-        <h1>Let's Play</h1>
+  <h1
+  style={{
+    color: message === "All Clear!" ? "green" : message === "Game Over" ? "red" : "black"
+  }}
+>
+  {message === "All Clear!" ? "ALL CLEAR" : message === "Game Over" ? "GAME OVER" : "Let's Play"}
+</h1>
+
+
+{/* Hiển thị thông báo */}
+        {/* <h1>Let's Play</h1> */}
         <div
           style={{
             width: "400px",
