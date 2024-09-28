@@ -1,0 +1,12 @@
+.form {
+  width: 700px;
+  border: 1 solid #000;
+}
+.fade-out {
+  background-color: lightgreen; /* Màu chuyển đổi khi click */
+  opacity: 1;
+  transition: opacity 3s ease-out, background-color 1s ease-in; /* Fade-out trong 3 giây */
+}
+.hidden {
+  opacity: 0;
+}
